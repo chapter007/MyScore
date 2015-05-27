@@ -1,21 +1,18 @@
 <resources>
-
-   
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
-        
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item> 
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- <item name="android:windowBackground">@android:color/transparent</item> -->
         <!-- <item name="android:windowAnimationStyle">@style/animation_translucent_translate</item> -->
     </style>
     
-	<style name="animation_translucent_translate" parent="@android:style/Animation.Translucent">
+	<!-- <style name="animation_translucent_translate" parent="@android:style/Animation.Translucent">
         <item name="android:windowEnterAnimation">@anim/base_slide_right_in</item>  
         <item name="android:windowExitAnimation">@anim/base_slide_right_out</item>  
-    </style>
+    </style> -->
    
 </resources>

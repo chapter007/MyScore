@@ -1,4 +1,4 @@
-package com.example.myscore;
+package com.zhangjie.myscore;
 
 import android.annotation.TargetApi;
 import android.content.Context;

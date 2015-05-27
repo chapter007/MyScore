@@ -1,4 +1,4 @@
-package com.example.myscore;
+package com.zhangjie.myscore;
 
 import java.util.LinkedList;
 import java.util.List;
