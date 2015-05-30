@@ -25,11 +25,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.R.anim;
 import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -63,6 +68,7 @@ public class MainActivity extends ActionBarActivity {
 	private Spinner year;
 	private static String viewstate, viewstategenerator, eventValidation,
 			years;
+	private List<String> list;
 	private ArrayAdapter adapter;
 	private SharedPreferences service;
 	private String url = "http://211.70.149.134:8080/stud_score/brow_stud_score.aspx";
@@ -76,7 +82,6 @@ public class MainActivity extends ActionBarActivity {
 		year = (Spinner) findViewById(R.id.year);
 		remeber = (CheckBox) findViewById(R.id.remeber);
 		getScore = (Button) findViewById(R.id.getScore);
-
 		adapter = ArrayAdapter.createFromResource(MainActivity.this,
 				R.array.xn, R.layout.myspinner);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -85,7 +90,6 @@ public class MainActivity extends ActionBarActivity {
 		
 		service = PreferenceManager.getDefaultSharedPreferences(this);
 		if (service.getBoolean("check", true)) {
-			Log.i("service", "ok?");
 			remeber.setChecked(true);
 			EditText1.setText(service.getString("xh", ""));
 			EditText2.setText(service.getString("sf", ""));
@@ -167,7 +171,23 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void getViewState(String url) {
-		HttpGet get = new HttpGet(url);
+		try {
+			Document document=Jsoup.connect(url).get();
+			viewstate=document.getElementById("__VIEWSTATE").attr("value");
+			eventValidation=document.getElementById("__EVENTVALIDATION").attr("value");
+			Element xn=document.getElementById("drop_xn");
+			/*Elements options=xn.getElementsByTag("option");
+			for (Element option:options) {
+				if (option.attr("value")!="") {
+					String sxn=option.attr("value");
+					Log.i("xn", sxn);
+					list.add(sxn);
+				}
+			}*/
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		/*HttpGet get = new HttpGet(url);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpResponse httpResponse;
 		HttpEntity httpEntity;
@@ -231,7 +251,7 @@ public class MainActivity extends ActionBarActivity {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public String queryStringForPost(String url, String TextBox1,
@@ -268,7 +288,7 @@ public class MainActivity extends ActionBarActivity {
 		return null;
 	}
 
-	public void getFileFromBytes(String name, String path) {
+	/*public void getFileFromBytes(String name, String path) {
 		byte[] b = name.getBytes();
 		BufferedOutputStream stream = null;
 		File file = null;
@@ -289,7 +309,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		}
 
-	}
+	}*/
 
 	private ProgressDialog progressDialog;
 
