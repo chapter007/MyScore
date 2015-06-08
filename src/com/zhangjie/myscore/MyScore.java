@@ -35,6 +35,7 @@ public class MyScore extends SwipeBackActivity {
 		setContentView(R.layout.my_score);
 		Intent intent = getIntent();
 		Score_Info = intent.getStringExtra("Score_Info");
+		zTerm=intent.getStringExtra("year");
 		score = (ListView) findViewById(R.id.score);
 		manager=new DbManager(MyScore.this);
 		preference=PreferenceManager.getDefaultSharedPreferences(MyScore.this);
@@ -50,11 +51,7 @@ public class MyScore extends SwipeBackActivity {
 			String t = e.getElementsByTag("td").text();
 			Map<String, Object> map = new HashMap<String, Object>();
 			String[] s = t.split("\\s");
-			Log.i("length", ""+s.length);
-			if (s.length>0) {
-				zTerm=s[0];
-				preference.edit().putString("term", zTerm).commit();
-			}
+			
 			switch (s.length) {
 			case 10:
 				map.put("term", s[0]);
@@ -85,13 +82,24 @@ public class MyScore extends SwipeBackActivity {
 				break;
 			}
 		}
-		if (manager.query()!=null&&preference!=null&&!preference.getString("term", null).equals(zTerm)) {
-			Log.i("选择了不同的学期", zTerm);
-			add();
-		}else {
-			Log.i("第一次添加数据", zTerm);
+		//Log.i("database term", ""+manager.queryTerm(zTerm));
+		if (manager.queryTerm(zTerm)) {
+			Log.i("可以向数据库添加数据", zTerm);
 			add();
 		}
+		/*if (preference.getString("term", null)!=null) {
+			if (zTerm.equals(preference.getString("term", null))) {
+				Log.i("选择了相同的学期", zTerm);
+			}else {
+				Log.i("选择了不同的学期", zTerm);
+				preference.edit().putString("term", zTerm).commit();
+				add();
+			}
+		}else {
+			Log.i("第一次添加数据", zTerm);
+			preference.edit().putString("term", zTerm).commit();
+			add();
+		}*/
 		
 		score.setAdapter(adapter);
 	}

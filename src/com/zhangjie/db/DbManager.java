@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.util.Log;
 
 public class DbManager {
 	
@@ -77,9 +78,26 @@ public class DbManager {
 		return data;
 	}
 	
+	public boolean queryTerm(String Zterm){
+		Cursor cursor=queryTheCursor();
+		String term = null;
+		while (cursor.moveToNext()) {
+			term=term+cursor.getString(cursor.getColumnIndex("Term"));
+		}
+		if (term!=null) {
+			Log.i("数据库里的term",term);
+			if (!term.contains(Zterm)) {//不一样，可以添加新数据
+				return true;
+			}else {//一样，bu可以添加新数据
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public Cursor queryTheCursor() {  
         Cursor c = database.rawQuery("SELECT * FROM SCORE", null);  
-        return c;  
+        return c;
     }
 	
 	public void closeDatabase() {

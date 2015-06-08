@@ -267,6 +267,7 @@ public class MainActivity extends ActionBarActivity {
 			} else {
 				Intent intent = new Intent(MainActivity.this, MyScore.class);
 				intent.putExtra("Score_Info", Score_Info);
+				intent.putExtra("year", years);
 				startActivity(intent);
 			}
 
