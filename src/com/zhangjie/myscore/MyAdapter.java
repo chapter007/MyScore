@@ -2,19 +2,22 @@ package com.zhangjie.myscore;
 
 import java.util.List;
 import java.util.Map;
-
+import android.R.integer;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MyAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<Map<String, Object>> data;
+	private TextView[] text;
 
 	public MyAdapter(Context mContext, List<Map<String, Object>> mdata) {
 		context = mContext;
@@ -36,14 +39,15 @@ public class MyAdapter extends BaseAdapter {
 		return position;
 	}
 
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		TextView[] text = new TextView[8];
-		//Log.i("position", "ÕâÊÇµÚ"+position);
 		if (convertView == null) {
 			convertView = LayoutInflater.from(context).inflate(
 					R.layout.score_info, null);
+			text = new TextView[8];
 		}
+		LinearLayout bg=(LinearLayout) convertView.findViewById(R.id.Lbg);
 		text[0] = (TextView) convertView.findViewById(R.id.Lesson_info);
 		text[1] = (TextView) convertView.findViewById(R.id.teacher);
 		text[2] = (TextView) convertView.findViewById(R.id.My_Score);
@@ -61,6 +65,14 @@ public class MyAdapter extends BaseAdapter {
 		text[5].setText((CharSequence) data.get(position).get("everyday"));
 		text[6].setText((CharSequence) data.get(position).get("exp"));
 		text[7].setText((CharSequence) data.get(position).get("reget"));
+		int score=Integer.parseInt(data.get(position).get("my").toString());
+		if (score>=90) {
+			bg.setBackgroundResource(R.color.light_blue);
+		}else if (score>=70) {
+			bg.setBackgroundResource(R.color.light_green);
+		}else {
+			bg.setBackgroundResource(R.color.red);
+		}
 		return convertView;
 	}
 
