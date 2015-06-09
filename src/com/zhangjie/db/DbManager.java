@@ -73,6 +73,31 @@ public class DbManager {
 		while (cursor.moveToNext()) {
 			score mScore=new score();
 			mScore.lesson=cursor.getString(cursor.getColumnIndex("Lesson"));
+			mScore.teacher=cursor.getString(cursor.getColumnIndex("Teacher"));
+			mScore.myScore=cursor.getString(cursor.getColumnIndex("myScore"));
+			mScore.sumScore=cursor.getString(cursor.getColumnIndex("sumScore"));
+			mScore.realScore=cursor.getString(cursor.getColumnIndex("realScore"));
+			mScore.eveScore=cursor.getString(cursor.getColumnIndex("eveScore"));
+			mScore.reScore=cursor.getString(cursor.getColumnIndex("reScore"));
+			data.add(mScore);
+		}
+		return data;
+	}
+	
+	public ArrayList<score> query(String Zterm) {
+		ArrayList<score> data=new ArrayList<score>();
+		String cmd=String.format("SELECT * FROM SCORE where Term = '%s'", Zterm);
+		Log.i("cmd", cmd);
+		Cursor cursor=database.rawQuery(cmd, null);
+		while (cursor.moveToNext()) {
+			score mScore=new score();
+			mScore.lesson=cursor.getString(cursor.getColumnIndex("Lesson"));
+			mScore.teacher=cursor.getString(cursor.getColumnIndex("Teacher"));
+			mScore.myScore=cursor.getString(cursor.getColumnIndex("myScore"));
+			mScore.sumScore=cursor.getString(cursor.getColumnIndex("sumScore"));
+			mScore.realScore=cursor.getString(cursor.getColumnIndex("realScore"));
+			mScore.eveScore=cursor.getString(cursor.getColumnIndex("eveScore"));
+			mScore.reScore=cursor.getString(cursor.getColumnIndex("reScore"));
 			data.add(mScore);
 		}
 		return data;
@@ -85,10 +110,11 @@ public class DbManager {
 			term=term+cursor.getString(cursor.getColumnIndex("Term"));
 		}
 		if (term!=null) {
-			Log.i("数据库里的term",term);
 			if (!term.contains(Zterm)) {//不一样，可以添加新数据
+				Log.i("不一样，getwebInfo",Zterm);
 				return true;
-			}else {//一样，bu可以添加新数据
+			}else {//一样，bu可以添加新数据,可以直接读取数据
+				Log.i("一样，可以直接读取数据",Zterm);
 				return false;
 			}
 		}

@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/my_score"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:background="#fff" >
 
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:id="@+id/notify"
+        android:text="并没有你的成绩记录，你确定你是ahuter？或者是你的学期选错了"
+        android:visibility="invisible"/>
+    
     <ListView
         android:id="@+id/score"
         android:layout_width="match_parent"
@@ -15,4 +25,4 @@
         android:dividerHeight="10dp"
         android:divider="@null" />
 
-</LinearLayout>
+</RelativeLayout>

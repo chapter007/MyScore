@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
-    android:orientation="vertical" 
+    android:orientation="vertical"
+    android:id="@+id/Lbg" 
     android:padding="5dp">
 
     <TextView
         android:id="@+id/Lesson_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试能不能看到？？"
-        android:textSize="23sp" />
+        android:textSize="23sp"
+        android:textColor="#000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,13 +22,15 @@
     <TextView
         android:id="@+id/teacher"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="#000"/>
 
     <TextView
         android:id="@+id/My_Score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:textColor="#000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,12 +40,14 @@
         <TextView
             android:id="@+id/Sum_Score"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000" />
 
         <TextView
             android:id="@+id/Real_Score"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,17 +58,20 @@
         <TextView
             android:id="@+id/Everyday_Score"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000" />
 
         <TextView
             android:id="@+id/Exp_Score"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/Reget_Score"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#000" />
 
 </LinearLayout>
