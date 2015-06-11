@@ -30,6 +30,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ListView;
@@ -68,7 +70,8 @@ public class MyScore extends SwipeBackActivity {
 		preference = PreferenceManager
 				.getDefaultSharedPreferences(MyScore.this);
 		adapter = new MyAdapter(this, data);
-		boolean checkDB=manager.queryTerm(zTerm);
+		new getScore().execute();
+		/*boolean checkDB=manager.queryTerm(zTerm);
 		Log.i("checkDb", ""+!checkDB);
 		if (!checkDB) {
 			//从数据库读取数据
@@ -78,8 +81,7 @@ public class MyScore extends SwipeBackActivity {
 			//从网上找数据
 			Log.i("从网上找数据", "");
 			new getScore().execute();
-			
-		}
+		}*/
 		score.setAdapter(adapter);
 	}
 
@@ -146,10 +148,10 @@ public class MyScore extends SwipeBackActivity {
 		if (data.isEmpty()) {
 			notify.setVisibility(View.VISIBLE);
 		}
-		if (manager.queryTerm(zTerm)&&!data.isEmpty()) {
+		/*if (manager.queryTerm(zTerm)&&!data.isEmpty()) {
 			Log.i("可以向数据库添加数据", zTerm);
 			add();
-		}
+		}*/
 	}
 
 	public void getDbInfo() {
@@ -263,6 +265,20 @@ public class MyScore extends SwipeBackActivity {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.save, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId()==R.id.save) {
+			add();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
