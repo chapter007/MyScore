@@ -37,8 +37,8 @@ public class DbManager {
         database.beginTransaction();  //开始事务  
         try {  
             for (score score : scores) {  
-                database.execSQL("INSERT INTO score VALUES(NULL,?,?, ?, ?, ?,?,?,?)", 
-                		new Object[]{score.term,score.lesson, score.teacher, score.myScore,
+                database.execSQL("INSERT INTO score VALUES(NULL,?,?,?,?, ?, ?, ?,?,?,?)", 
+                		new Object[]{score.xh,score.term,score.lesson,score.lessonId,score.teacher, score.myScore,
                 		score.sumScore,score.realScore,score.eveScore,score.reScore});  
             }
             database.setTransactionSuccessful();  //设置事务成功完成  
@@ -84,13 +84,15 @@ public class DbManager {
 		return data;
 	}
 	
-	public ArrayList<score> query(String Zterm) {
+	public ArrayList<score> query(String Zterm,String xh) {
 		ArrayList<score> data=new ArrayList<score>();
-		String cmd=String.format("SELECT * FROM SCORE where Term = '%s'", Zterm);
+		String cmd=String.format("SELECT * FROM SCORE where Term = '%s' and xh = '%s'", Zterm,xh);
 		Log.i("cmd", cmd);
 		Cursor cursor=database.rawQuery(cmd, null);
 		while (cursor.moveToNext()) {
 			score mScore=new score();
+			mScore.xh=cursor.getString(cursor.getColumnIndex("xh"));
+			mScore.lessonId=cursor.getString(cursor.getColumnIndex("LessonID"));
 			mScore.lesson=cursor.getString(cursor.getColumnIndex("Lesson"));
 			mScore.teacher=cursor.getString(cursor.getColumnIndex("Teacher"));
 			mScore.myScore=cursor.getString(cursor.getColumnIndex("myScore"));
@@ -101,6 +103,26 @@ public class DbManager {
 			data.add(mScore);
 		}
 		return data;
+	}
+	
+	public ArrayList<String> queryLessonID() {
+		ArrayList<String> LessonsID=new ArrayList<String>();
+		Cursor cursor=database.rawQuery("SELECT LessonID FROM SCORE", null);
+		while (cursor.moveToNext()) {
+			String LessonID=cursor.getString(cursor.getColumnIndex("LessonID"));
+			LessonsID.add(LessonID);
+		}
+		return LessonsID;
+	}
+	
+	public ArrayList<String> queryXH() {
+		ArrayList<String> XHs=new ArrayList<String>();
+		Cursor cursor=database.rawQuery("SELECT xh FROM SCORE", null);
+		while (cursor.moveToNext()) {
+			String xh=cursor.getString(cursor.getColumnIndex("xh"));
+			XHs.add(xh);
+		}
+		return XHs;
 	}
 	
 	public boolean queryTerm(String Zterm){

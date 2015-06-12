@@ -16,7 +16,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) {//第一次调用的时候就会用它来创建数据库
 		db.execSQL("CREATE TABLE IF NOT EXISTS score" +  
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,Term VARCHAR, Lesson VARCHAR,Teacher VARCHAR, "
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,xh VARCHAR,Term VARCHAR, Lesson VARCHAR,LessonID VARCHAR,Teacher VARCHAR, "
                 + "myScore VARCHAR, sumScore VARCHAR,realScore VARCHAR,eveScore VARCHAR,reScore VARCHAR)");  
 	}
 

@@ -70,10 +70,12 @@ public class MyScore extends SwipeBackActivity {
 		preference = PreferenceManager
 				.getDefaultSharedPreferences(MyScore.this);
 		adapter = new MyAdapter(this, data);
-		new getScore().execute();
-		/*boolean checkDB=manager.queryTerm(zTerm);
-		Log.i("checkDb", ""+!checkDB);
-		if (!checkDB) {
+		//new getScore().execute();
+		
+		boolean checkDB=manager.queryTerm(zTerm);
+		boolean isXH=manager.queryXH().contains(xh);
+		Log.i("checkDb", ""+!checkDB+"/"+isXH);
+		if (!checkDB&&isXH) {
 			//从数据库读取数据
 			getDbInfo();
 			adapter.notifyDataSetChanged();
@@ -81,23 +83,33 @@ public class MyScore extends SwipeBackActivity {
 			//从网上找数据
 			Log.i("从网上找数据", "");
 			new getScore().execute();
-		}*/
+		}
 		score.setAdapter(adapter);
 	}
 
 	public void add() {
+		ArrayList<String> lessonsid=manager.queryLessonID();
 		ArrayList<score> scores = new ArrayList<score>();
 		for (int i = 0; i < data.size(); i++) {
-			score score = new score();
-			score.term = (String) data.get(i).get("term");
-			score.lesson = (String) data.get(i).get("lesson");
-			score.teacher = (String) data.get(i).get("teacher");
-			score.myScore = (String) data.get(i).get("my");
-			score.sumScore = (String) data.get(i).get("sum");
-			score.realScore = (String) data.get(i).get("real");
-			score.eveScore = (String) data.get(i).get("everyday");
-			// score.reScore=Integer.parseInt(data.get(i).get("re").toString());
-			scores.add(score);
+			if (!lessonsid.isEmpty()&&lessonsid.contains(data.get(i).get("lessonid"))) {
+				//Log.i("lessonsid", ""+lessonsid);
+				//Log.i("lesson id is contain", ""+lessonsid.contains(data.get(i).get("lessonid")));
+				Toast.makeText(MyScore.this, "已存在这门课的成绩，不需要保存", Toast.LENGTH_SHORT).show();
+				break;
+			}else {
+				score score = new score();
+				score.xh=(String) data.get(i).get("xh");
+				score.term = (String) data.get(i).get("term");
+				score.lesson = (String) data.get(i).get("lesson");
+				score.teacher = (String) data.get(i).get("teacher");
+				score.myScore = (String) data.get(i).get("my");
+				score.sumScore = (String) data.get(i).get("sum");
+				score.realScore = (String) data.get(i).get("real");
+				score.eveScore = (String) data.get(i).get("everyday");
+				score.lessonId=(String) data.get(i).get("lessonid");
+				// score.reScore=Integer.parseInt(data.get(i).get("re").toString());
+				scores.add(score);
+			}
 		}
 
 		manager.add(scores);
@@ -112,10 +124,11 @@ public class MyScore extends SwipeBackActivity {
 			String t = e.getElementsByTag("td").text();
 			Map<String, Object> map = new HashMap<String, Object>();
 			String[] s = t.split("\\s");
-
 			switch (s.length) {
 			case 10:
+				map.put("xh", xh);
 				map.put("term", s[0]);
+				map.put("lessonid", s[2]);
 				map.put("lesson", s[3] + " " + s[4] + "学分" + " " + s[5]);
 				map.put("teacher", s[7]);
 				map.put("my", s[8]);
@@ -123,7 +136,9 @@ public class MyScore extends SwipeBackActivity {
 				data.add(map);
 				break;
 			case 11:
+				map.put("xh", xh);
 				map.put("term", s[0]);
+				map.put("lessonid", s[2]);
 				map.put("lesson", s[3] + " " + s[4] + "学分" + " " + s[5]);
 				map.put("teacher", s[7]);
 				map.put("my", s[8]);
@@ -132,7 +147,9 @@ public class MyScore extends SwipeBackActivity {
 				data.add(map);
 				break;
 			case 12:
+				map.put("xh", xh);
 				map.put("term", s[0]);
+				map.put("lessonid", s[2]);
 				map.put("lesson", s[3] + " " + s[4] + "学分" + " " + s[5]);
 				map.put("teacher", s[7]);
 				map.put("my", s[8]);
@@ -156,9 +173,11 @@ public class MyScore extends SwipeBackActivity {
 
 	public void getDbInfo() {
 		ArrayList<score> scores=new ArrayList<score>();
-		scores=manager.query(zTerm);
+		scores=manager.query(zTerm,xh);
 		for (score score:scores) {
 			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("xh", score.xh);
+			map.put("lessonid", score.lessonId);
 			map.put("term", score.term);
 			map.put("lesson", score.lesson);
 			map.put("teacher", score.teacher);
@@ -236,8 +255,8 @@ public class MyScore extends SwipeBackActivity {
 			progressDialog = null;
 			// Log.i("score",Score_Info);
 			if (Score_Info == null) {
-				Toast.makeText(MyScore.this, "出了一些问题，可以重试一下",
-						Toast.LENGTH_SHORT).show();
+				/*Toast.makeText(MyScore.this, "出了一些问题，可以重试一下",
+						Toast.LENGTH_SHORT).show();*/
 			}else {
 				doc = Jsoup.parse(Score_Info);
 				getWebInfo(doc);
@@ -246,12 +265,12 @@ public class MyScore extends SwipeBackActivity {
 			super.onPostExecute(result);
 		}
 
-		@Override
+		/*@Override
 		protected void onCancelled() {
 			progressDialog.dismiss();
 			progressDialog = null;
 			super.onCancelled();
-		}
+		}*/
 
 	}
 	

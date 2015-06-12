@@ -1,7 +1,7 @@
 package com.zhangjie.db;
 
 public class score {
-	public String lesson,teacher;
+	public String lesson,teacher,lessonId,xh;
 	public String myScore,sumScore,realScore,eveScore,reScore,id,term;
 	
 	public score() {
