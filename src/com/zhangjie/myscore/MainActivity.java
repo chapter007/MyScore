@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
 
 	protected static final int GET = 0x11;
 	private EditText EditText1, EditText2;
-	private CheckBox remeber;
+	private CheckBox remeber,xq1,xq2;
 	private Button getScore;
 	private Spinner year;
 	private static String viewstate, viewstategenerator, eventValidation,
@@ -39,6 +39,8 @@ public class MainActivity extends ActionBarActivity {
 		EditText2 = (EditText) findViewById(R.id.TextBox2);
 		year = (Spinner) findViewById(R.id.year);
 		remeber = (CheckBox) findViewById(R.id.remeber);
+		xq1 = (CheckBox) findViewById(R.id.xq1);
+		xq2 = (CheckBox) findViewById(R.id.xq2);
 		getScore = (Button) findViewById(R.id.getScore);
 		adapter = ArrayAdapter.createFromResource(MainActivity.this,
 				R.array.xn, R.layout.myspinner);
@@ -99,13 +101,20 @@ public class MainActivity extends ActionBarActivity {
 					Toast.makeText(MainActivity.this, "请把信息补完整",
 							Toast.LENGTH_SHORT).show();
 				} else {
+					String xq = null;
+					if (xq1.isChecked()&&!xq2.isChecked()) {
+						xq="1";
+					}else if (!xq1.isChecked()&&xq2.isChecked()) {
+						xq="2";
+					}else {
+						Toast.makeText(MainActivity.this, "未选择学期将显示整个学年的成绩",
+								Toast.LENGTH_SHORT).show();
+					}
 					Intent intent = new Intent(MainActivity.this, MyScore.class);
-					intent.putExtra("viewstate", viewstate);
-					intent.putExtra("viewstategenerator", viewstategenerator);
-					intent.putExtra("eventValidation", eventValidation);
 					intent.putExtra("xh", EditText1.getText().toString());
 					intent.putExtra("sf", EditText2.getText().toString());
 					intent.putExtra("year", years);
+					intent.putExtra("xq", xq);
 					startActivity(intent);
 				}
 			}

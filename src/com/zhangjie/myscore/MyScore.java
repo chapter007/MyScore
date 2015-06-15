@@ -41,7 +41,7 @@ import android.widget.Toast;
 public class MyScore extends SwipeBackActivity {
 
 	private String Score_Info, zTerm, viewstate, viewstategenerator,
-			eventValidation, xh,sf;
+			eventValidation, xh,sf,xq;
 	private ListView score;
 	private TextView notify;
 	private List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
@@ -60,19 +60,16 @@ public class MyScore extends SwipeBackActivity {
 		zTerm = intent.getStringExtra("year");
 		xh=intent.getStringExtra("xh");
 		sf=intent.getStringExtra("sf");
-		eventValidation=intent.getStringExtra("eventValidation");
-		viewstate=intent.getStringExtra("viewstate");
-		viewstategenerator=intent.getStringExtra("viewstategenerator");
-		
+		xq=intent.getStringExtra("xq");
 		score = (ListView) findViewById(R.id.score);
 		notify=(TextView) findViewById(R.id.notify);
 		manager = new DbManager(MyScore.this);
 		preference = PreferenceManager
 				.getDefaultSharedPreferences(MyScore.this);
 		adapter = new MyAdapter(this, data);
-		//new getScore().execute();
+		new getScore().execute();
 		
-		boolean checkDB=manager.queryTerm(zTerm);
+		/*boolean checkDB=manager.queryTerm(zTerm);
 		boolean isXH=manager.queryXH().contains(xh);
 		Log.i("checkDb", ""+!checkDB+"/"+isXH);
 		if (!checkDB&&isXH) {
@@ -83,7 +80,7 @@ public class MyScore extends SwipeBackActivity {
 			//从网上找数据
 			Log.i("从网上找数据", "");
 			new getScore().execute();
-		}
+		}*/
 		score.setAdapter(adapter);
 	}
 
@@ -205,7 +202,7 @@ public class MyScore extends SwipeBackActivity {
 		parmas.add(new BasicNameValuePair("TextBox1", TextBox1));
 		parmas.add(new BasicNameValuePair("TextBox2", TextBox2));
 		parmas.add(new BasicNameValuePair("drop_xn", zTerm));
-		parmas.add(new BasicNameValuePair("drop_xq", ""));
+		parmas.add(new BasicNameValuePair("drop_xq", xq));
 		parmas.add(new BasicNameValuePair("drop_type", "全部成绩"));
 		parmas.add(new BasicNameValuePair("Button_cjcx", "查询"));
 		parmas.add(new BasicNameValuePair("hid_dqszj", ""));
@@ -255,8 +252,8 @@ public class MyScore extends SwipeBackActivity {
 			progressDialog = null;
 			// Log.i("score",Score_Info);
 			if (Score_Info == null) {
-				/*Toast.makeText(MyScore.this, "出了一些问题，可以重试一下",
-						Toast.LENGTH_SHORT).show();*/
+				Toast.makeText(MyScore.this, "出了一些问题，可以重试一下",
+						Toast.LENGTH_SHORT).show();
 			}else {
 				doc = Jsoup.parse(Score_Info);
 				getWebInfo(doc);
@@ -280,7 +277,7 @@ public class MyScore extends SwipeBackActivity {
 			viewstate = document.getElementById("__VIEWSTATE").attr("value");
 			eventValidation = document.getElementById("__EVENTVALIDATION")
 					.attr("value");
-			document.getElementById("drop_xn");
+			//document.getElementById("drop_xn");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
